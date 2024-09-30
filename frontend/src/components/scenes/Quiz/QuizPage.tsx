@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import "./QuizPage.css"; // Import the CSS for styling
-import "../../styles/global.css"; // Import the global CSS for styling
-import { Quiz, Mushroom } from "../../types/quiz";
+import "../../../styles/global.css"; // Import the global CSS for styling
+import { Mushroom } from "@shared/types";
 import { generateQuiz } from "./QuizFactory";
-import mushroms from "./DemoData";
-import Button from "../../components/Button/Button";
+import mushroms from "../../../data/Mushrooms";
+import Button from "../../Button/Button";
 import { MultipleNamesQuestion, MultiplePicturesQuestion } from "./Question";
+import { useMushrooms } from "../../../api/useMushrooms";
 
 const QuizPage = () => {
   const NUMBER_OF_OPTIONS = 8;
 
-  const [mushormeNotChosenJet, setMushormeNotChosenJet] = useState(mushroms);
+  const { data: mushrooms = [], isLoading, error } = useMushrooms();
+
+  const [mushormeNotChosenJet, setMushormeNotChosenJet] = useState<Mushroom[]>(
+    []
+  );
   const [currentQuiz, setCurrentQuiz] = useState(
     generateQuiz(mushroms, NUMBER_OF_OPTIONS)
   );
@@ -25,7 +30,14 @@ const QuizPage = () => {
 
   const correctMushrome = currentQuiz.correctAnswer; // Hardcoded for now to always check first mushroom
 
-  const handleImageClick = (selectedMushroom: Mushroom) => {
+  useEffect(() => {
+    if (mushrooms.length > 0) {
+      setMushormeNotChosenJet(mushrooms);
+      setCurrentQuiz(generateQuiz(mushrooms, NUMBER_OF_OPTIONS));
+    }
+  }, [mushrooms]);
+
+  const handleAlternativeClicked = (selectedMushroom: Mushroom) => {
     if (selectedMushroom === correctMushrome) {
       handleCorrectMushromClicker(selectedMushroom);
     } else {
@@ -55,9 +67,8 @@ const QuizPage = () => {
     if (isCorrectFirstTry) {
       setQuizScore(quizScore + 1);
     }
-    let copyOfMushroms = mushormeNotChosenJet;
+    let copyOfMushroms: Mushroom[] = mushormeNotChosenJet;
     let newNotChoosenJet: Mushroom[] = [];
-    console.log(mushormeNotChosenJet);
     copyOfMushroms.forEach(
       (mushrom) => mushrom !== correctMushrome && newNotChoosenJet.push(mushrom)
     );
@@ -88,17 +99,25 @@ const QuizPage = () => {
     }
   }
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
   return (
-    <div className="quiz-page-container">
+    <main className="quiz-page-container">
       {questionCounter % 2 === 0 ? (
         <MultiplePicturesQuestion
           currentQuiz={currentQuiz}
-          handleImageClick={handleImageClick}
+          handleAlternativeClicked={handleAlternativeClicked}
         />
       ) : (
         <MultipleNamesQuestion
           currentQuiz={currentQuiz}
-          handleImageClick={handleImageClick}
+          handleAlternativeClicked={handleAlternativeClicked}
         />
       )}
       {isCorrect && message && (
@@ -111,7 +130,7 @@ const QuizPage = () => {
         label={"Neste"}
         onClick={function (): void {
           if (mushormeNotChosenJet.length < NUMBER_OF_OPTIONS) {
-            setMessage("Gratulerer! Du klarte alle!");
+            setMessage("Gratulerer! Du kom igjennom quizen!");
           } else {
             setCurrentQuiz(
               generateQuiz(mushormeNotChosenJet, NUMBER_OF_OPTIONS)
@@ -123,7 +142,7 @@ const QuizPage = () => {
         }}
         type="secondary"
       ></Button>
-    </div>
+    </main>
   );
 };
 

@@ -1,7 +1,6 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./scenes/HomePage/HomePage";
-import QuizPage from "./scenes/Quiz/QuizPage";
+import HomePage from "./components/scenes/HomePage/HomePage";
+import QuizPage from "./components/scenes/Quiz/QuizPage";
 
 const AppRoutes = () => {
   return (

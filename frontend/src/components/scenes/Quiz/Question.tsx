@@ -1,16 +1,16 @@
 import { useState } from "react";
-import Button from "../../components/Button/Button";
-import { Mushroom, Quiz } from "../../types/quiz";
+import Button from "../../Button/Button";
+import { Mushroom, Quiz } from "@shared/types";
 import "./Question.css";
 
 type QuestionProps = {
   currentQuiz: Quiz;
-  handleImageClick: (mushrom: Mushroom) => void;
+  handleAlternativeClicked: (mushrom: Mushroom) => void;
 };
 
 const MultiplePicturesQuestion: React.FC<QuestionProps> = ({
   currentQuiz,
-  handleImageClick,
+  handleAlternativeClicked,
 }) => {
   const [clickedImage, setClickedImage] = useState<string | null>(null);
   const [isCorrectClickedImage, setIsCorrectClickedImage] =
@@ -33,7 +33,7 @@ const MultiplePicturesQuestion: React.FC<QuestionProps> = ({
                 : "quiz-image-alternative"
             }
             onClick={() => {
-              handleImageClick(mushroom);
+              handleAlternativeClicked(mushroom);
               setClickedImage(mushroom.name);
               if (mushroom == currentQuiz.correctAnswer) {
                 setIsCorrectClickedImage(true);
@@ -50,7 +50,7 @@ const MultiplePicturesQuestion: React.FC<QuestionProps> = ({
 
 const MultipleNamesQuestion: React.FC<QuestionProps> = ({
   currentQuiz,
-  handleImageClick,
+  handleAlternativeClicked,
 }) => {
   const [clickedImage, setClickedImage] = useState<string | null>(null);
 
@@ -68,7 +68,7 @@ const MultipleNamesQuestion: React.FC<QuestionProps> = ({
             key={mushroom.name}
             label={mushroom.name}
             onClick={() => {
-              handleImageClick(mushroom);
+              handleAlternativeClicked(mushroom);
               setClickedImage(mushroom.name); // Track which image is clicked
             }}
             type={clickedImage === mushroom.name ? "answer-clicked" : "answer"}
@@ -79,4 +79,39 @@ const MultipleNamesQuestion: React.FC<QuestionProps> = ({
   );
 };
 
-export { MultiplePicturesQuestion, MultipleNamesQuestion };
+const MushroomGroupQuestion: React.FC<QuestionProps> = ({
+  currentQuiz,
+  handleAlternativeClicked,
+}) => {
+  const [clickedImage, setClickedImage] = useState<string | null>(null);
+
+  return (
+    <div className="multiple-names-question">
+      <img
+        src={currentQuiz.correctAnswer.image}
+        alt={`Valg`}
+        className="quiz-image-question"
+      />
+      <div className="image-grid">
+        <h1>{currentQuiz.questionMultipleNames}</h1>
+        {currentQuiz.options.map((mushroom) => (
+          <Button
+            key={mushroom.name}
+            label={mushroom.name}
+            onClick={() => {
+              handleAlternativeClicked(mushroom);
+              setClickedImage(mushroom.name); // Track which image is clicked
+            }}
+            type={clickedImage === mushroom.name ? "answer-clicked" : "answer"}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export {
+  MultiplePicturesQuestion,
+  MultipleNamesQuestion,
+  MushroomGroupQuestion,
+};

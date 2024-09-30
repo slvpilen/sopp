@@ -1,5 +1,5 @@
 // src/scenes/Quiz/utils/quizFactory.ts
-import { Mushroom, Quiz } from "../../types/quiz";
+import { Mushroom, Quiz } from "@shared/types";
 
 /**
  * Shuffle array helper function to randomize options

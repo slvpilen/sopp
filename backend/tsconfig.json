@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "commonjs",
+    "target": "es6",
+    "esModuleInterop": true,
+    "strict": true,
+    "baseUrl": ".",
+    "experimentalDecorators": true,      
+    "emitDecoratorMetadata": true,   
+    "moduleResolution": "node",       
+    "skipLibCheck": true,                    
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@shared/*": ["../shared/*"]
+    }
+  },
+  "include": ["src/**/*", "../shared/**/*"]  
+}

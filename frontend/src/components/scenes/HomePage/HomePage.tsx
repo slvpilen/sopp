@@ -1,14 +1,13 @@
-import React from "react";
-import LoadingAnimation from "../../components/LoadingAnimation/LoadingAnimation";
+import LoadingAnimation from "../../LoadingAnimation/LoadingAnimation";
 import "./HomePage.css";
-import Button from "../../components/Button/Button";
+import Button from "../../Button/Button";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="home-page-container">
+    <main className="home-page-container">
       <h1>Velkommen til sopphimmelen!</h1>
       <p>Dette er sopphimmelen. Alt av sopp er her. Nå snakker vi, eller?</p>
       <Button
@@ -17,7 +16,7 @@ const HomePage = () => {
         onClick={() => navigate("/quiz")}
       />
       <LoadingAnimation />
-    </div>
+    </main>
   );
 };
 

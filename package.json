@@ -1,0 +1,25 @@
+{
+    "private": true,
+    "workspaces": [
+        "frontend",
+        "backend",
+        "shared"
+    ],
+    "name": "sopp",
+    "version": "1.0.0",
+    "description": "This is a mushroom app! The goal is to make learning about mushrooms both fun and educational. Through an interactive quiz, users can test their mushroom knowledge while earning points and climbing the leaderboard. Whether you're a beginner or a mushroom enthusiast, this game is a great way to discover fascinating facts about mushrooms while having fun!",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "frontend": "npm run dev --prefix frontend",
+        "backend": "npm run dev --prefix backend",
+        "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+        "postinstall": "npm install --prefix frontend && npm install --prefix backend"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "concurrently": "^9.0.1"
+    }
+}

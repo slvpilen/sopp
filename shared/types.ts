@@ -12,5 +12,9 @@ export interface Mushroom {
     isPoisonous: boolean;
     isFood: boolean;
     needExtraHeat: boolean;
-    /* Add more whn the times comes */
+  }
+
+export interface MushroomGroup {
+    name: string;
+    description: string; 
   }
