@@ -1,48 +1,48 @@
 import { useEffect, useState } from "react";
 import "./QuizPage.css"; // Import the CSS for styling
 import "../../../styles/global.css"; // Import the global CSS for styling
-import { Mushroom } from "@shared/types";
+import { Mushroom, Quiz } from "@shared/types";
 import { generateQuiz } from "./QuizFactory";
-import mushroms from "../../../data/Mushrooms";
 import Button from "../../Button/Button";
 import { MultipleNamesQuestion, MultiplePicturesQuestion } from "./Question";
 import { useMushrooms } from "../../../api/useMushrooms";
+import LoadingAnimation from "../../../components/LoadingAnimation/LoadingAnimation";
 
 const QuizPage = () => {
   const NUMBER_OF_OPTIONS = 8;
 
   const { data: mushrooms = [], isLoading, error } = useMushrooms();
-
   const [mushormeNotChosenJet, setMushormeNotChosenJet] = useState<Mushroom[]>(
     []
   );
-  const [currentQuiz, setCurrentQuiz] = useState(
-    generateQuiz(mushroms, NUMBER_OF_OPTIONS)
-  );
-
+  const [currentQuiz, setCurrentQuiz] = useState<Quiz>();
   const [message, setMessage] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
-
   const [questionCounter, setQuestionCounter] = useState(0);
-
   const [isCorrectFirstTry, setIsCorrectFirstTry] = useState(true);
   const [quizScore, setQuizScore] = useState(0);
 
-  const correctMushrome = currentQuiz.correctAnswer; // Hardcoded for now to always check first mushroom
-
   useEffect(() => {
+    initQuizPage();
+  }, [mushrooms]);
+
+  // Called as long mushrrom is loading. Stop calling when its stable
+  function initQuizPage() {
     if (mushrooms.length > 0) {
       setMushormeNotChosenJet(mushrooms);
       setCurrentQuiz(generateQuiz(mushrooms, NUMBER_OF_OPTIONS));
     }
-  }, [mushrooms]);
+  }
 
   const handleAlternativeClicked = (selectedMushroom: Mushroom) => {
-    if (selectedMushroom === correctMushrome) {
+    if (selectedMushroom === currentQuiz?.correctAnswer) {
       handleCorrectMushromClicker(selectedMushroom);
     } else {
       setIsCorrectFirstTry(false);
-      if (selectedMushroom.isPoisonous && !correctMushrome.isPoisonous) {
+      if (
+        selectedMushroom.isPoisonous &&
+        !currentQuiz?.correctAnswer.isPoisonous
+      ) {
         setMessage(
           "Oops! Det er ikke riktig sopp. Du valgte: " +
             selectedMushroom.name +
@@ -70,7 +70,8 @@ const QuizPage = () => {
     let copyOfMushroms: Mushroom[] = mushormeNotChosenJet;
     let newNotChoosenJet: Mushroom[] = [];
     copyOfMushroms.forEach(
-      (mushrom) => mushrom !== correctMushrome && newNotChoosenJet.push(mushrom)
+      (mushrom) =>
+        mushrom !== currentQuiz?.correctAnswer && newNotChoosenJet.push(mushrom)
     );
     setMushormeNotChosenJet(newNotChoosenJet);
   }
@@ -99,8 +100,8 @@ const QuizPage = () => {
     }
   }
 
-  if (isLoading) {
-    return <p>Loading...</p>;
+  if (isLoading || !currentQuiz) {
+    return <LoadingAnimation />;
   }
 
   if (error) {
