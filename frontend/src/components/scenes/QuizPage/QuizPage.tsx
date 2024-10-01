@@ -6,7 +6,8 @@ import { generateQuiz } from "./QuizFactory";
 import Button from "../../Button/Button";
 import { MultipleNamesQuestion, MultiplePicturesQuestion } from "./Question";
 import { useMushrooms } from "../../../api/useMushrooms";
-import LoadingAnimation from "../../../components/LoadingAnimation/LoadingAnimation";
+import LoadingAnimation from "../../LoadingAnimation/LoadingAnimation";
+import { getInfoAboutMushrome } from "./helpers";
 
 const QuizPage = () => {
   const NUMBER_OF_OPTIONS = 8;
@@ -19,7 +20,7 @@ const QuizPage = () => {
   const [message, setMessage] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
   const [questionCounter, setQuestionCounter] = useState(0);
-  const [isCorrectFirstTry, setIsCorrectFirstTry] = useState(true);
+  const [hasGuessed, setHasGuessed] = useState(false);
   const [quizScore, setQuizScore] = useState(0);
 
   useEffect(() => {
@@ -38,7 +39,6 @@ const QuizPage = () => {
     if (selectedMushroom === currentQuiz?.correctAnswer) {
       handleCorrectMushromClicker(selectedMushroom);
     } else {
-      setIsCorrectFirstTry(false);
       if (
         selectedMushroom.isPoisonous &&
         !currentQuiz?.correctAnswer.isPoisonous
@@ -60,11 +60,12 @@ const QuizPage = () => {
       // Add info youe died?Was the mushorme you should select eatable and you choose one not? => you loose
       setIsCorrect(false);
     }
+    setHasGuessed(true);
   };
   function handleCorrectMushromClicker(selectedMushroom: Mushroom) {
     setMessage("RIKTIG! " + getInfoAboutMushrome(selectedMushroom));
     setIsCorrect(true);
-    if (isCorrectFirstTry) {
+    if (!hasGuessed) {
       setQuizScore(quizScore + 1);
     }
     let copyOfMushroms: Mushroom[] = mushormeNotChosenJet;
@@ -75,29 +76,11 @@ const QuizPage = () => {
     );
     setMushormeNotChosenJet(newNotChoosenJet);
   }
-
-  function getInfoAboutMushrome(selectedMushroom: Mushroom) {
-    if (selectedMushroom.isPoisonous) {
-      return selectedMushroom.description + " SOPPEN ER GIFTIG";
-    }
-    if (selectedMushroom.isFood) {
-      return selectedMushroom.description + " Det er en matsopp";
-    }
-    if (selectedMushroom.isFood && selectedMushroom.needExtraHeat) {
-      return (
-        selectedMushroom.description +
-        " Det er en matsopp, men MÅ varmebehandles ekstra godt"
-      );
-    }
-    if (
-      !selectedMushroom.isFood &&
-      !selectedMushroom.needExtraHeat &&
-      !selectedMushroom.isPoisonous
-    ) {
-      return (
-        selectedMushroom.description + " er ikke giftig, men ingen matsopp"
-      );
-    }
+  function handleNewQuestion() {
+    setCurrentQuiz(generateQuiz(mushormeNotChosenJet, NUMBER_OF_OPTIONS));
+    setMessage("");
+    setHasGuessed(false);
+    setQuestionCounter(questionCounter + 1);
   }
 
   if (isLoading || !currentQuiz) {
@@ -121,28 +104,29 @@ const QuizPage = () => {
           handleAlternativeClicked={handleAlternativeClicked}
         />
       )}
-      {isCorrect && message && (
-        <p className="quiz-message-correct">{message}</p>
-      )}
+      <section className="quiz-message-score-next">
+        {isCorrect && message && (
+          <p className="quiz-message-correct">{message}</p>
+        )}
 
-      {!isCorrect && message && <p className="quiz-message-wrong">{message}</p>}
-      <p className="quiz-score">{`Score: ${quizScore}`}</p>
-      <Button
-        label={"Neste"}
-        onClick={function (): void {
-          if (mushormeNotChosenJet.length < NUMBER_OF_OPTIONS) {
-            setMessage("Gratulerer! Du kom igjennom quizen!");
-          } else {
-            setCurrentQuiz(
-              generateQuiz(mushormeNotChosenJet, NUMBER_OF_OPTIONS)
-            );
-            setMessage("");
-            setIsCorrectFirstTry(true);
-            setQuestionCounter(questionCounter + 1);
-          }
-        }}
-        type="secondary"
-      ></Button>
+        {!isCorrect && message && (
+          <p className="quiz-message-wrong">{message}</p>
+        )}
+        <section className="score-and-next-button">
+          <p className="quiz-score">{`Score: ${quizScore}`}</p>
+          <Button
+            label={"Neste"}
+            onClick={function (): void {
+              if (mushormeNotChosenJet.length < NUMBER_OF_OPTIONS) {
+                setMessage("Gratulerer! Du kom igjennom quizen!");
+              } else {
+                handleNewQuestion();
+              }
+            }}
+            type="secondary"
+          ></Button>
+        </section>
+      </section>
     </main>
   );
 };

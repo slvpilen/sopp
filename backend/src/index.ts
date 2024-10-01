@@ -20,7 +20,7 @@ class Mushroom {
   name!: string;
 
   @Field()
-  image!: string; // This will return a URL to the static image
+  image!: string;
 
   @Field()
   description!: string;
@@ -37,7 +37,6 @@ class Mushroom {
 
 
 
-// Define the resolver for Mushroom queries
 @Resolver()
 class MushroomResolver {
   @Query(() => [Mushroom])

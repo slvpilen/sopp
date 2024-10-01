@@ -17,9 +17,9 @@ const MultiplePicturesQuestion: React.FC<QuestionProps> = ({
     useState<boolean>(false);
 
   return (
-    <div className="multiple-pictures-question">
+    <figure className="multiple-pictures-question">
       <h1>{currentQuiz.questionMultiplePicture}</h1>
-      <div className="image-grid">
+      <section className="image-grid">
         {currentQuiz.options.map((mushroom, index) => (
           <img
             key={index}
@@ -43,8 +43,8 @@ const MultiplePicturesQuestion: React.FC<QuestionProps> = ({
             }}
           />
         ))}
-      </div>
-    </div>
+      </section>
+    </figure>
   );
 };
 
@@ -55,13 +55,13 @@ const MultipleNamesQuestion: React.FC<QuestionProps> = ({
   const [clickedImage, setClickedImage] = useState<string | null>(null);
 
   return (
-    <div className="multiple-names-question">
+    <figure className="multiple-names-question">
       <img
         src={currentQuiz.correctAnswer.image}
         alt={`Valg`}
         className="quiz-image-question"
       />
-      <div className="image-grid">
+      <section className="alternative-grid">
         <h1>{currentQuiz.questionMultipleNames}</h1>
         {currentQuiz.options.map((mushroom) => (
           <Button
@@ -74,8 +74,8 @@ const MultipleNamesQuestion: React.FC<QuestionProps> = ({
             type={clickedImage === mushroom.name ? "answer-clicked" : "answer"}
           />
         ))}
-      </div>
-    </div>
+      </section>
+    </figure>
   );
 };
 
@@ -86,7 +86,7 @@ const MushroomGroupQuestion: React.FC<QuestionProps> = ({
   const [clickedImage, setClickedImage] = useState<string | null>(null);
 
   return (
-    <div className="multiple-names-question">
+    <figure className="multiple-names-question">
       <img
         src={currentQuiz.correctAnswer.image}
         alt={`Valg`}
@@ -106,7 +106,7 @@ const MushroomGroupQuestion: React.FC<QuestionProps> = ({
           />
         ))}
       </div>
-    </div>
+    </figure>
   );
 };
 

@@ -1,0 +1,68 @@
+.quiz-page-container {
+  align-items: center;
+  margin-top: 10px;
+  background-color: #1c1c1c; 
+  justify-content: center;
+  
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  letter-spacing: 1.5px;
+}
+
+p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+
+.quiz-message-correct {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  color: green;
+  padding: 10px;
+}
+.quiz-message-wrong {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  color: red;
+  padding: 10px;
+}
+
+.quiz-message.error {
+  color: red;
+}
+
+.score-and-next-button {
+  display: flex;
+  flex-direction: column; /* Stack the elements vertically by default */
+  justify-content: center;
+  align-items: center; /* Center items horizontally */
+  margin-top: 20px;
+}
+
+
+
+.score-and-next-button > * {
+  margin: 10px 0; /* Add space above and below each element */
+}
+
+@media (max-width: 700px),(max-height: 400px)  {
+  .score-and-next-button {
+    flex-direction: row; /* Switch to side-by-side layout on smaller screens */
+    justify-content: center; /* Center the elements in the row */
+  }
+  .quiz-message-correct, .quiz-message-wrong {
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
+
+  .score-and-next-button > * {
+    margin: 0 0px; /* Add space between the elements */
+  }
+
+  
+}
+

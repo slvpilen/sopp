@@ -1,0 +1,132 @@
+.quiz-page-container {
+  text-align: center;
+  margin-top: 10px;
+  color: #fff;
+  
+}
+
+
+.multiple-pictures-question, .multiple-names-question{
+  padding-top: 5px;
+  height: fit-content;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  letter-spacing: 1.5px;
+}
+
+p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.image-grid, .alternative-grid {
+  margin-top: 10px;
+  padding: 10px;
+  max-width: 1000px; /* Set the max width for the grid */
+  margin-left: auto;
+  margin-right: auto; /* This centers the grid within the container */
+}
+
+.quiz-image-alternative:hover {
+  transform: scale(1.1); /* Enlarge the image slightly on hover */
+  border-color: #ff6347;
+}
+
+
+.quiz-image-question {
+  width: 100%; /* Use a percentage to make the image responsive */
+  max-width: 600px; /* Ensure it doesn’t exceed 600px on large screens */
+  width: auto; /* Let the width adjust automatically based on the height */
+  height: auto; /* Let the height adjust automatically based on the width */
+  max-height: 400px;
+  object-fit: contain; /* Ensure the image maintains its aspect ratio */
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+
+
+.quiz-image-alternative {
+  width: auto; /* Set a consistent width */
+  max-height: 187px; 
+  object-fit: cover; /* Ensure images cover the area without being stretched */
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  border: 2px solid transparent;
+}
+
+
+.quiz-image-alternative-clicked{
+  width: auto; /* Set a consistent width */
+  max-height: 187px;
+  object-fit: cover; /* Ensure images cover the area without being stretched */
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  border: 2px solid transparent;
+  transform: scale(1.1); /* Enlarge the image slightly on hover */
+  border-color: #ff6347;
+}
+.alternative-grid{
+  height: 150px;
+}
+
+
+.quiz-image-alternative-clicked-correct{
+  width: auto; /* Set a consistent width */
+  max-height: 187px; /* Set a consistent height */
+  object-fit: cover; /* Ensure images cover the area without being stretched */
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  border: 2px solid transparent;
+  transform: scale(1.1); /* Enlarge the image slightly on hover */
+  border-color: #53ff47;
+}
+
+
+@media (max-width: 700px),(max-height: 800px)  {
+
+  .quiz-image-alternative {
+    max-height: 100px; 
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    letter-spacing: 1.5px;
+  }
+  .quiz-image-alternative-clicked, .quiz-image-alternative-clicked-correct{
+    max-height: 110px; /* Set a consistent height */
+  }
+
+  }
+  p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+@media (max-height: 800px)  {
+  .quiz-image-question {
+  max-height: 140px; /* Ensure it doesn’t exceed 600px on large screens */
+  }
+  .multiple-names-question{
+    padding-top: 0px;
+  }
+  .image-grid, .alternative-grid {
+    margin-top: 0px;
+    padding: 0px;
+  }
+  .quiz-image-alternative {
+    max-height: 90px; 
+  }
+  .quiz-image-alternative-clicked{
+    max-height: 100px; /* Set a consistent height */
+  }
+}
+
+
+

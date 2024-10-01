@@ -1,0 +1,13 @@
+$sizes: 44;
+
+@mixin gap-classes {
+  @for $i from 1 through $sizes {
+    $gap: $i * 0.25rem;
+
+    .gap-#{$i} {
+      gap: $gap !important;
+    }
+  }
+}
+
+@include gap-classes;
