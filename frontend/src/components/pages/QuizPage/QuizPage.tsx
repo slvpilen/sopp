@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import "./QuizPage.css"; // Import the CSS for styling
-import "../../../styles/global.css"; // Import the global CSS for styling
-import { Mushroom, Quiz } from "@shared/types";
+import "./QuizPage.css";
+import "src/styles/global.css";
+import { Mushroom, Question } from "@shared/types";
 import { generateQuiz } from "./QuizFactory";
-import Button from "../../Button/Button";
+import Button from "src/components/shared/Button/Button";
 import { MultipleNamesQuestion, MultiplePicturesQuestion } from "./Question";
-import { useMushrooms } from "../../../api/useMushrooms";
-import LoadingAnimation from "../../LoadingAnimation/LoadingAnimation";
+import { useMushrooms } from "src/api/useMushrooms";
+import LoadingAnimation from "src/components/shared/LoadingAnimation/LoadingAnimation";
 import { getInfoAboutMushrome } from "./helpers";
+import { PublicPage } from "src/components/shared/Page/PublicPage";
 
 const QuizPage = () => {
   const NUMBER_OF_OPTIONS = 8;
@@ -16,7 +17,7 @@ const QuizPage = () => {
   const [mushormeNotChosenJet, setMushormeNotChosenJet] = useState<Mushroom[]>(
     []
   );
-  const [currentQuiz, setCurrentQuiz] = useState<Quiz>();
+  const [currentQuestion, setCurrentQuestion] = useState<Question>();
   const [message, setMessage] = useState("");
   const [isCorrect, setIsCorrect] = useState(false);
   const [questionCounter, setQuestionCounter] = useState(0);
@@ -31,17 +32,17 @@ const QuizPage = () => {
   function initQuizPage() {
     if (mushrooms.length > 0) {
       setMushormeNotChosenJet(mushrooms);
-      setCurrentQuiz(generateQuiz(mushrooms, NUMBER_OF_OPTIONS));
+      setCurrentQuestion(generateQuiz(mushrooms, NUMBER_OF_OPTIONS));
     }
   }
 
   const handleAlternativeClicked = (selectedMushroom: Mushroom) => {
-    if (selectedMushroom === currentQuiz?.correctAnswer) {
+    if (selectedMushroom === currentQuestion?.correctAnswer) {
       handleCorrectMushromClicker(selectedMushroom);
     } else {
       if (
         selectedMushroom.isPoisonous &&
-        !currentQuiz?.correctAnswer.isPoisonous
+        !currentQuestion?.correctAnswer.isPoisonous
       ) {
         setMessage(
           "Oops! Det er ikke riktig sopp. Du valgte: " +
@@ -72,18 +73,19 @@ const QuizPage = () => {
     let newNotChoosenJet: Mushroom[] = [];
     copyOfMushroms.forEach(
       (mushrom) =>
-        mushrom !== currentQuiz?.correctAnswer && newNotChoosenJet.push(mushrom)
+        mushrom !== currentQuestion?.correctAnswer &&
+        newNotChoosenJet.push(mushrom)
     );
     setMushormeNotChosenJet(newNotChoosenJet);
   }
   function handleNewQuestion() {
-    setCurrentQuiz(generateQuiz(mushormeNotChosenJet, NUMBER_OF_OPTIONS));
+    setCurrentQuestion(generateQuiz(mushormeNotChosenJet, NUMBER_OF_OPTIONS));
     setMessage("");
     setHasGuessed(false);
     setQuestionCounter(questionCounter + 1);
   }
 
-  if (isLoading || !currentQuiz) {
+  if (isLoading || !currentQuestion) {
     return <LoadingAnimation />;
   }
 
@@ -92,42 +94,46 @@ const QuizPage = () => {
   }
 
   return (
-    <main className="quiz-page-container">
-      {questionCounter % 2 === 0 ? (
-        <MultiplePicturesQuestion
-          currentQuiz={currentQuiz}
-          handleAlternativeClicked={handleAlternativeClicked}
-        />
-      ) : (
-        <MultipleNamesQuestion
-          currentQuiz={currentQuiz}
-          handleAlternativeClicked={handleAlternativeClicked}
-        />
-      )}
-      <section className="quiz-message-score-next">
-        {isCorrect && message && (
-          <p className="quiz-message-correct">{message}</p>
+    <PublicPage>
+      <main className="quiz-page-container">
+        {questionCounter % 2 === 0 ? (
+          <MultiplePicturesQuestion
+            questionType="multiplePictures"
+            question={currentQuestion}
+            handleAlternativeClicked={handleAlternativeClicked}
+          />
+        ) : (
+          <MultipleNamesQuestion
+            questionType="multipleNames"
+            question={currentQuestion}
+            handleAlternativeClicked={handleAlternativeClicked}
+          />
         )}
-
-        {!isCorrect && message && (
-          <p className="quiz-message-wrong">{message}</p>
-        )}
-        <section className="score-and-next-button">
-          <p className="quiz-score">{`Score: ${quizScore}`}</p>
-          <Button
-            label={"Neste"}
-            onClick={function (): void {
-              if (mushormeNotChosenJet.length < NUMBER_OF_OPTIONS) {
-                setMessage("Gratulerer! Du kom igjennom quizen!");
-              } else {
-                handleNewQuestion();
+        <section className="quiz-message-score-next">
+          {message && (
+            <p
+              className={
+                isCorrect ? "quiz-message-correct" : "quiz-message-wrong"
               }
-            }}
-            type="secondary"
-          ></Button>
+            >
+              {message}
+            </p>
+          )}
+          <section className="score-and-next-button">
+            <p className="quiz-score">{`Score: ${quizScore}`}</p>
+            <Button
+              label={"Neste"}
+              onClick={() => {
+                mushormeNotChosenJet.length < NUMBER_OF_OPTIONS
+                  ? setMessage("Gratulerer! Du kom igjennom quizen!")
+                  : handleNewQuestion();
+              }}
+              type="secondary"
+            ></Button>
+          </section>
         </section>
-      </section>
-    </main>
+      </main>
+    </PublicPage>
   );
 };
 

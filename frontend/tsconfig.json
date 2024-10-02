@@ -19,10 +19,11 @@
     /* Add paths to resolve the shared folder */
     "baseUrl": ".", 
     "paths": {
-      "@shared/*": ["../shared/*"]  // Path to shared folder relative to the frontend
+      "@shared/*": ["../shared/*"],
+      "src/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "../shared"]
 }
 
 
