@@ -1,5 +1,5 @@
 // src/scenes/Quiz/utils/quizFactory.ts
-import { Mushroom, Quiz } from "@shared/types";
+import { Mushroom, Question } from "@shared/types";
 
 /**
  * Shuffle array helper function to randomize options
@@ -17,7 +17,7 @@ const shuffleArray = (array: any[]): any[] => {
  * @param optionsCount Number of options to present in the quiz (default is 4)
  * @returns A generated Quiz object
  */
-export const generateQuiz = (mushrooms: Mushroom[], optionsCount = 4): Quiz => {
+export const generateQuiz = (mushrooms: Mushroom[], optionsCount = 4): Question => {
   if (mushrooms.length < optionsCount) {
     throw new Error("Not enough mushrooms to generate the quiz");
   }

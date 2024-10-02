@@ -30,8 +30,10 @@ export function Menu({ iconType, items }: Props) {
         ref={accountAnchorRef}
         onClick={toggleIsMenuOpen}
       >
-        {iconType === "menu" && <MenuIcon />}
-        {iconType === "account" && <AccountCircleOutlined />}
+        {iconType === "menu" && <MenuIcon sx={{ color: "white" }} />}
+        {iconType === "account" && (
+          <AccountCircleOutlined sx={{ color: "white" }} />
+        )}
       </IconButton>
 
       <MenuMUI

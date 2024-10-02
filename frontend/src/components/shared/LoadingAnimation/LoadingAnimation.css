@@ -1,0 +1,24 @@
+.mushroom-loader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mushroom-loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); /* Slight transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* Ensure it stays on top */
+  }
+  
+  .mushroom-image {
+    width: 100px;
+    height: 100px;
+  }
+  

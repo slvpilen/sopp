@@ -85,17 +85,18 @@ const QuizPage = () => {
     setQuestionCounter(questionCounter + 1);
   }
 
-  if (isLoading || !currentQuestion) {
-    return <LoadingAnimation />;
-  }
-
   if (error) {
     return <p>Error: {error.message}</p>;
+  }
+
+  if (isLoading || !currentQuestion) {
+    return <LoadingAnimation overlay={true} />;
   }
 
   return (
     <PublicPage>
       <main className="quiz-page-container">
+        {isLoading && <LoadingAnimation overlay={true} />}
         {questionCounter % 2 === 0 ? (
           <MultiplePicturesQuestion
             questionType="multiplePictures"
